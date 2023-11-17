@@ -30,11 +30,14 @@ const Artwork = () => {
 
   useEffect(() => {
     if (data) {
+      const filteredResults = validObjectIDList.objectIDs.filter(x => data.objectIDs?.includes(x));
       const results = [];
-      for (let i = 0; i < data?.objectIDs?.length; i += PER_PAGE) {
-        const chunk = data?.objectIDs.slice(i, i + PER_PAGE);
+  
+      for (let i = 0; i < filteredResults.length; i += PER_PAGE) {
+        const chunk = filteredResults.slice(i, i + PER_PAGE);
         results.push(chunk);
       }
+  
       setArtworkList(results);
       setPage(1);
     }
