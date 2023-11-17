@@ -1,3 +1,15 @@
+/*********************************************************************************
+*  WEB422 – Assignment 5
+*  I declare that this assignment is my own work in accordance with Seneca Academic Policy.  
+*  No part of this assignment has been copied manually or electronically from any other source
+*  (including web sites) or distributed to other students.
+* 
+*  Name: Preet Patel Student ID: 175058213 Date: 16th Novemeber 2023 
+*  Github Link: https://github.com/preetp1024/myapp
+*
+*
+********************************************************************************/ 
+
 
 import { Row, Col, Image } from 'react-bootstrap';
 import Layout from '@/components/Layout';
