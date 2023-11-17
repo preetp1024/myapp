@@ -1,4 +1,3 @@
-// pages/artwork/[objectID].js
 
 import { Row, Col } from 'react-bootstrap';
 import { useRouter } from 'next/router';

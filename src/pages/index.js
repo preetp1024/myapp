@@ -1,4 +1,3 @@
-// pages/index.js
 
 import { Row, Col, Image } from 'react-bootstrap';
 import Layout from '@/components/Layout';
