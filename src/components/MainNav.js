@@ -5,13 +5,13 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useAtom } from 'jotai';
 import { searchHistoryAtom } from '../../store';
-import { addToHistory, removeToken } from '../lib/userData.js'; 
+import { addToHistory, removeToken } from '../lib/userData'; 
 
 const MainNav = () => {
   const router = useRouter();
   const [searchField, setSearchField] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
-  
+
   const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
 
   const token = readToken(); // Assuming you have a function to read the token

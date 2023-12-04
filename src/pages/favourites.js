@@ -1,7 +1,7 @@
 
 import { useAtom } from 'jotai';
 import { Card, Row, Col } from 'react-bootstrap';
-import { favouritesAtom } from '../../store.js';
+import { favouritesAtom } from '../../store';
 import ArtworkCard from '../components/ArtworkCard.js';
 
 const Favourites = () => {
