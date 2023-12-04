@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAtom } from 'jotai';
-import { favouritesAtom, searchHistoryAtom } from '../store'; // Adjust the import path as needed
-import { getFavourites, getHistory } from '../lib/userData'; // Adjust the import path as needed
+import { getFavourites, getHistory } from '../lib/userData'; 
 
 export default function Login() {
   const router = useRouter();

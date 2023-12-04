@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import { Card, Button } from 'react-bootstrap';
 import { useAtom } from 'jotai';
 import { favouritesAtom } from '../../store';
-import { addToFavourites, removeFromFavourites } from '../../lib/userData'; // Import the userData functions
+import { addToFavourites, removeFromFavourites } from '../lib/userData'; // Import the userData functions
 
 const ArtworkCardDetail = ({ objectID }) => {
   const { data, error } = useSWR(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`);
