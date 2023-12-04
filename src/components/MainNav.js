@@ -11,6 +11,7 @@ const MainNav = () => {
   const router = useRouter();
   const [searchField, setSearchField] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
+  
   const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
 
   const token = readToken(); // Assuming you have a function to read the token
