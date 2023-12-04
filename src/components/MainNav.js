@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useAtom } from 'jotai';
 import { searchHistoryAtom } from '../../store';
-import { addToHistory, removeToken } from '../lib/userData'; 
+import { addToHistory, removeFromHistory } from '../lib/userData'; 
 
 const MainNav = () => {
   const router = useRouter();
