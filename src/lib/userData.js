@@ -1,5 +1,5 @@
 
-import { getToken } from './authentic';
+import { getToken } from './authenticate';
 
 // Function to make a GET request to retrieve favorites
 async function getFavourites() {
