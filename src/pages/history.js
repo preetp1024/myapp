@@ -5,10 +5,15 @@ import { useAtom } from 'jotai';
 import { searchHistoryAtom } from '../../store.js';
 import { Card, ListGroup, Button } from 'react-bootstrap';
 import styles from '@/styles/History.module.css';
+import { removeFromHistory } from '../lib/userData'; // Import the removeFromHistory function
 
 const History = () => {
   const router = useRouter();
   const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
+
+  useEffect(() => {
+    if (!searchHistory) return null; // Prevent displaying "Nothing Here" temporarily while data is being fetched
+  }, [searchHistory]);
 
   const parsedHistory = searchHistory.map((h) => {
     const params = new URLSearchParams(h);
@@ -21,17 +26,19 @@ const History = () => {
     router.push(`/artwork?${searchHistory[index]}`);
   };
 
-  const removeHistoryClicked = (e, index) => {
+  const removeHistoryClicked = async (e, index) => { // Make the function asynchronous
     e.stopPropagation();
-    setSearchHistory((current) => {
-      const updatedHistory = [...current];
-      updatedHistory.splice(index, 1);
-      return updatedHistory;
-    });
+    try {
+      await removeFromHistory(searchHistory[index]); // Remove history item using removeFromHistory function
+      setSearchHistory((current) => {
+        const updatedHistory = [...current];
+        updatedHistory.splice(index, 1);
+        return updatedHistory;
+      });
+    } catch (error) {
+      console.error('Error removing history item:', error);
+    }
   };
-
-  useEffect(() => {
-  }, [searchHistory]);
 
   return (
     <Card>

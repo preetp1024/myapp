@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useAtom } from 'jotai';
 import { searchHistoryAtom } from '../../store.js';
+import { addToHistory, removeToken } from '../lib/userData'; // Import the necessary functions
 
 const MainNav = () => {
   const router = useRouter();
@@ -12,16 +13,31 @@ const MainNav = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
 
-  const handleSubmit = (e) => {
+  const token = readToken(); // Assuming you have a function to read the token
+
+  const submitForm = async (e) => {
     e.preventDefault();
     const queryString = `/artwork?title=true&q=${searchField}`;
     router.push(queryString);
-    setIsExpanded(false); 
-    setSearchHistory((current) => [...current, queryString]);
+    setIsExpanded(false);
+
+    try {
+      // Update search history using addToHistory function
+      await addToHistory(`title=true&q=${searchField}`);
+      setSearchHistory((current) => [...current, queryString]);
+    } catch (error) {
+      console.error('Error updating search history:', error);
+    }
   };
 
   const handleDropdownClick = () => {
-    setIsExpanded(false); 
+    setIsExpanded(false);
+  };
+
+  const logout = () => {
+    setIsExpanded(false);
+    removeToken(); // Remove the token from local storage
+    router.push('/login'); // Redirect to the login page
   };
 
   return (
@@ -34,37 +50,58 @@ const MainNav = () => {
               Home
             </Nav.Link>
           </Link>
-          <Link href="/search" passHref>
-            <Nav.Link href="/search" legacyBehavior active={router.pathname === "/search"}>
-              Advanced Search
-            </Nav.Link>
-          </Link>
+          {token && ( // Only show Advanced Search when the user is logged in
+            <Link href="/search" passHref>
+              <Nav.Link href="/search" legacyBehavior active={router.pathname === "/search"}>
+                Advanced Search
+              </Nav.Link>
+            </Link>
+          )}
         </Nav>
-        <Form className="d-flex" onSubmit={handleSubmit}>
-          <FormControl
-            type="text"
-            placeholder="Search"
-            className="mr-2"
-            value={searchField}
-            onChange={(e) => setSearchField(e.target.value)}
-          />
-          <Button type="submit" variant="outline-light">
-            Search
-          </Button>
-        </Form>
+        {token && ( // Only show Search form when the user is logged in
+          <Form className="d-flex" onSubmit={submitForm}>
+            <FormControl
+              type="text"
+              placeholder="Search"
+              className="mr-2"
+              value={searchField}
+              onChange={(e) => setSearchField(e.target.value)}
+            />
+            <Button type="submit" variant="outline-light">
+              Search
+            </Button>
+          </Form>
+        )}
         <Nav>
-          <NavDropdown title="User Name" id="basic-nav-dropdown">
-            <Link href="/favourites" passHref>
-              <NavDropdown.Item href="/favourites" onClick={handleDropdownClick} active={router.pathname === "/favourites"}>
-                Favourites
-              </NavDropdown.Item>
-            </Link>
-            <Link href="/history" passHref>
-              <NavDropdown.Item href="/history" onClick={handleDropdownClick} active={router.pathname === "/history"}>
-                Search History
-              </NavDropdown.Item>
-            </Link>
-          </NavDropdown>
+          {token ? ( // Show user-related items when the user is logged in
+            <NavDropdown title={token.userName || 'User Name'} id="basic-nav-dropdown">
+              <Link href="/favourites" passHref>
+                <NavDropdown.Item href="/favourites" onClick={handleDropdownClick} active={router.pathname === "/favourites"}>
+                  Favourites
+                </NavDropdown.Item>
+              </Link>
+              <Link href="/history" passHref>
+                <NavDropdown.Item href="/history" onClick={handleDropdownClick} active={router.pathname === "/history"}>
+                  Search History
+                </NavDropdown.Item>
+              </Link>
+              <NavDropdown.Divider />
+              <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item> {/* Log out option */}
+            </NavDropdown>
+          ) : (
+            <Nav className="me-auto"> {/* Show Register and Login links when the user is not logged in */}
+              <Link href="/register" passHref>
+                <Nav.Link href="/register" onClick={() => setIsExpanded(false)} active={router.pathname === "/register"}>
+                  Register
+                </Nav.Link>
+              </Link>
+              <Link href="/login" passHref>
+                <Nav.Link href="/login" onClick={() => setIsExpanded(false)} active={router.pathname === "/login"}>
+                  Login
+                </Nav.Link>
+              </Link>
+            </Nav>
+          )}
         </Nav>
       </Navbar>
       <br />

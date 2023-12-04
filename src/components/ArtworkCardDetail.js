@@ -4,11 +4,12 @@ import useSWR from 'swr';
 import { Card, Button } from 'react-bootstrap';
 import { useAtom } from 'jotai';
 import { favouritesAtom } from '../../store';
+import { addToFavourites, removeFromFavourites } from '../../lib/userData'; // Import the userData functions
 
 const ArtworkCardDetail = ({ objectID }) => {
   const { data, error } = useSWR(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`);
   const [favouritesList, setFavouritesList] = useAtom(favouritesAtom);
-  const [showAdded, setShowAdded] = useState(favouritesList.includes(objectID));
+  const [showAdded, setShowAdded] = useState(false); // Set the default value to false
 
   useEffect(() => {
     setShowAdded(favouritesList.includes(objectID));
@@ -31,13 +32,21 @@ const ArtworkCardDetail = ({ objectID }) => {
     artistWikidata_URL,
   } = data;
 
-  const favouritesClicked = () => {
-    if (showAdded) {
-      setFavouritesList((current) => current.filter((fav) => fav !== objectID));
-    } else {
-      setFavouritesList((current) => [...current, objectID]);
+  const favouritesClicked = async () => { // Make the function asynchronous
+    try {
+      if (showAdded) {
+        // Remove from favorites
+        await removeFromFavourites(objectID);
+        setFavouritesList((current) => current.filter((fav) => fav !== objectID));
+      } else {
+        // Add to favorites
+        await addToFavourites(objectID);
+        setFavouritesList((current) => [...current, objectID]);
+      }
+      setShowAdded(!showAdded);
+    } catch (error) {
+      console.error('Error updating favorites:', error);
     }
-    setShowAdded(!showAdded);
   };
 
   const imageUrl = primaryImage ? primaryImage : 'https://via.placeholder.com/375x375.png?text=[+Not+Available+]';
