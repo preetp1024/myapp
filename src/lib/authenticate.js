@@ -1,27 +1,34 @@
 // Function to set the authentication token in local storage
 function setToken(token) {
+  if (typeof window !== 'undefined') {
     localStorage.setItem('authToken', token);
   }
-  
-  // Function to get the authentication token from local storage
-  function getToken() {
+}
+
+// Function to get the authentication token from local storage
+function getToken() {
+  if (typeof window !== 'undefined') {
     return localStorage.getItem('authToken');
   }
-  
-  // Function to remove the authentication token from local storage
-  function removeToken() {
+  return null; // Return null if running on the server
+}
+
+// Function to remove the authentication token from local storage
+function removeToken() {
+  if (typeof window !== 'undefined') {
     localStorage.removeItem('authToken');
   }
-  
-  // Function to read the authentication token
-  function readToken() {
-    return getToken();
-  }
-  
-  // Function to check if the user is authenticated
-  function isAuthenticated() {
-    return !!getToken();
-  }
+}
+
+// Function to read the authentication token
+function readToken() {
+  return getToken();
+}
+
+// Function to check if the user is authenticated
+function isAuthenticated() {
+  return !!getToken();
+}
   
   // Function to authenticate a user by sending a POST request to "/login"
   async function authenticateUser(user, password) {

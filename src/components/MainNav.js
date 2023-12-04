@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useAtom } from 'jotai';
 import { searchHistoryAtom } from '../../store';
 import { addToHistory, removeFromHistory } from '../lib/userData'; 
+import { readToken } from '@/lib/authenticate';
 
 const MainNav = () => {
   const router = useRouter();
@@ -14,7 +15,7 @@ const MainNav = () => {
 
   const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
 
-  const token = readToken(); // Assuming you have a function to read the token
+  const token = readToken(); 
 
   const submitForm = async (e) => {
     e.preventDefault();
