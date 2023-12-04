@@ -4,8 +4,8 @@ import { Navbar, Nav, Form, FormControl, Button, NavDropdown } from 'react-boots
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useAtom } from 'jotai';
-import { searchHistoryAtom } from '../../store.js';
-import { addToHistory, removeToken } from '../lib/userData'; // Import the necessary functions
+import { searchHistoryAtom } from '../../store';
+import { addToHistory, removeToken } from '../lib/userData.js'; 
 
 const MainNav = () => {
   const router = useRouter();

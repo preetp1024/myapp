@@ -5,7 +5,7 @@ import { useAtom } from 'jotai';
 import { searchHistoryAtom } from '../../store.js';
 import { Card, ListGroup, Button } from 'react-bootstrap';
 import styles from '@/styles/History.module.css';
-import { removeFromHistory } from '../lib/userData'; // Import the removeFromHistory function
+import { removeFromHistory } from '../lib/userData.js'; 
 
 const History = () => {
   const router = useRouter();
